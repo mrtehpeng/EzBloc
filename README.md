@@ -82,6 +82,20 @@ StateHandler: `Widget stateHandler(stateName)`
 @override
 Widget build(BuildContext context) {
 
+  Widget colouredText = ezbloc.EzBlocBuilder(context, (String stateName) {
+        switch(stateName) {
+          case "RED_TEXT":
+            return Text("Red Text", style: TextStyle(color: Colors.red));
+          break;
+          case "BLUE_TEXT":
+             return Text("Blue Text", style: TextStyle(color: Colors.blue));
+          break;
+          default:
+            return Text("Default Text", style: TextStyle(color: Colors.black));
+          break;
+          }
+      });
+
   return Column(children: [
 
           GestureDetector(child: Text("Click for red text"), onTap: () {
