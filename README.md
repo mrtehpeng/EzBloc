@@ -1,5 +1,8 @@
 # Flutter EzBloc
 
+![Flutter](https://camo.githubusercontent.com/9dedd2d58eefa0b363a70397864018e8045d60e4/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4d616465253230576974682d466c75747465722d626c75653f7374796c653d666c61742d737175617265 "Made with Flutter") ![License](https://camo.githubusercontent.com/57eaa4dd1013971849ec1d46acb5273827b25861/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6963656e73652f7468656d696e6473746f726d2f4e65787442757353673f7374796c653d666c61742d737175617265 
+"License") [![HitCount](http://hits.dwyl.com/mrtehpeng/tehpeng/EzBloc.svg)](http://hits.dwyl.com/mrtehpeng/tehpeng/EzBloc)
+
 Flutter Bloc Wrapper.
 
 You do not need to create multiple classes anymore! Just grab any events or states with a `String`.
