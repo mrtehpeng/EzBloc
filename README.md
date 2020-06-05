@@ -1,0 +1,2 @@
+# EzBloc
+Flutter Bloc Wrapper
