@@ -1,4 +1,4 @@
-# EzBloc
+# Flutter EzBloc
 
 Flutter Bloc Wrapper.
 
