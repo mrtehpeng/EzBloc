@@ -6,6 +6,15 @@ You do not need to create multiple classes anymore! Just grab any events or stat
 
 
 ---
+
+### Packages used
+
+```
+flutter_bloc: ^4.0.0
+bloc: ^4.0.0
+```
+
+---
  
 ### EzBloc.dart
 
@@ -100,12 +109,12 @@ Widget build(BuildContext context) {
 
           GestureDetector(child: Text("Click for red text"), onTap: () {
  
-            ezbloc.invokeEvent("BUTTON_CLICKED", {"value": 1})
+            ezbloc.invokeEvent("BUTTON_CLICKED", {"value": 1});
          }),
  
           GestureDetector(child: Text("Click for blue text"), onTap: () {
  
-            ezbloc.invokeEvent("BUTTON_CLICKED", {"value": 2})
+            ezbloc.invokeEvent("BUTTON_CLICKED", {"value": 2});
           }),
  
           colouredText,
