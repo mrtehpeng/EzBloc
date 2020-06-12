@@ -31,6 +31,8 @@ bloc: ^4.0.0
 
 Creates a new `EzBlocEvent` with identifier `eventName` with initial values `valueMap` and a `callback` function
 to determine the state based on values in `valueMap`.
+
+`callback` **must** have 3 arguments: `String eventName`, `List<String> valueKeys`, `Map valueMap`
  
 ---
  
@@ -78,6 +80,8 @@ StateHandler: `Widget stateHandler(stateName)`
     super.initState();
 
     ezbloc = EzBloc();
+    
+    // Example 1 : Using valueMap to determine resulting state
     Function EVENT_CALLBACK = (valueKeys, valueMap) {
       print("Event Callback value=" + valueMap["value"].toString());
       if (valueMap["value"] == 1) {
@@ -88,6 +92,17 @@ StateHandler: `Widget stateHandler(stateName)`
     ezbloc.createState("RED_TEXT");
     ezbloc.createState("BLUE_TEXT");
     ezbloc.createEvent("BUTTON_CLICKED", {"value": 1}, EVENT_CALLBACK);
+    
+    // Example 2 : Using eventName to determine resulting state
+    Function BUTTON_EVENT_CALLBACK = (String eventName, valueKeys, valueMap) { 
+      if (eventName == "RED_BUTTON_CLICKED") { 
+        return "RED_TEXT"; 
+      } else return "BLUE_TEXT"; 
+    }; 
+ 
+    // values are not needed in this example
+    ezbloc.createEvent("RED_BUTTON_CLICKED", {}, BUTTON_EVENT_CALLBACK);
+    ezbloc.createEvent("BLUE_BUTTON_CLICKED", {}, BUTTON_EVENT_CALLBACK);
   
   }
   
@@ -111,13 +126,21 @@ Widget build(BuildContext context) {
   return Column(children: [
 
           GestureDetector(child: Text("Click for red text"), onTap: () {
- 
+   
+            // Using example 1 
             ezbloc.invokeEvent("BUTTON_CLICKED", {"value": 1});
+            
+            // Using example 2
+            ezbloc.invokeEvent("RED_BUTTON_CLICKED", {});
          }),
  
           GestureDetector(child: Text("Click for blue text"), onTap: () {
  
+            // Using example 1
             ezbloc.invokeEvent("BUTTON_CLICKED", {"value": 2});
+            
+            // Using example 2
+            ezbloc.invokeEvent("RED_BUTTON_CLICKED", {});
           }),
  
           colouredText,
