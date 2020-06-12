@@ -89,7 +89,9 @@ class EzBlocEvent extends EzBlocBaseEvent {
  *  void initState() {
  *    super.initState();
  *    ezbloc = EzBloc();
- *    Function EVENT_CALLBACK = (valueKeys, valueMap) {
+ * 
+ *    // Example 1 - Using valueMap to determine resulting state
+ *    Function EVENT_CALLBACK = (String eventName, valueKeys, valueMap) {
  *      print("Event Callback value=" + valueMap["value"].toString());
  *      if (valueMap["value"] == 1) { 
  *        return "RED_TEXT"; 
@@ -99,6 +101,17 @@ class EzBlocEvent extends EzBlocBaseEvent {
  *    ezbloc.createState("RED_TEXT"); 
  *    ezbloc.createState("BLUE_TEXT"); 
  *    ezbloc.createEvent("BUTTON_CLICKED", {"value": 1}, EVENT_CALLBACK);
+ * 
+ *    // Example 2 : Using eventName to determine resulting state
+ *    Function EVENT_CALLBACK = (String eventName, valueKeys, valueMap) { 
+ *      if (eventName == "RED_BUTTON_CLICKED") { 
+ *        return "RED_TEXT"; 
+ *      } else return "BLUE_TEXT"; 
+ *    }; 
+ * 
+ *    // values are not needed in this example
+ *    ezbloc.createEvent("RED_BUTTON_CLICKED", {}, BUTTON_EVENT_CALLBACK);
+ *    ezbloc.createEvent("BLUE_BUTTON_CLICKED", {}, BUTTON_EVENT_CALLBACK);
  * 
  *  }
  * 
@@ -125,12 +138,20 @@ class EzBlocEvent extends EzBlocBaseEvent {
  * 
  *          GestureDetector(child: Text("Click for red text"), onTap: () {
  * 
- *            ezbloc.invokeEvent("BUTTON_CLICKED", {"value": 1})
+ *            // example 1
+ *            ezbloc.invokeEvent("BUTTON_CLICKED", {"value": 1});
+ * 
+ *            // example 2
+ *            ezbloc.invokeEvent("RED_BUTTON_CLICKED", {});
  *          }),
  * 
  *          GestureDetector(child: Text("Click for blue text"), onTap: () {
  * 
- *            ezbloc.invokeEvent("BUTTON_CLICKED", {"value": 2})
+ *            // example 1
+ *            ezbloc.invokeEvent("BUTTON_CLICKED", {"value": 2});
+ * 
+ *            // example 2
+ *            ezbloc.invokeEvent("BLUE_BUTTON_CLICKED", {});
  *          }),
  * 
  *          colouredText,
@@ -161,15 +182,19 @@ class EzBloc extends Bloc<EzBlocEvent, EzBlocBaseState> {
    * 
    * This callback function will be executed in `mapEventToState` to get which state to return based on the eventName parameter.
    * 
-   * It **must** contain two arguments `(List<String> argNames, Map<String, dynamic> argMap)`. (See below)
+   * It **must** contain three arguments `(String eventName, List<String> argNames, Map<String, dynamic> argMap)`. (See below)
    *         
    * This function **must** return a `String` - Name of the state you have identified previously
    *       
    *     @returns void
    * 
    * ### Function `callback`
+   * 
+   *      @param: currentEvent (String) -
+   * 
+   * The last invoked event. You can use this to determine the resulting state.
    *
-   *      @param: argNames (List<String>) - 
+   *      @param: argKeys (List<String>) - 
    * 
    * List of keys in valueMap
    * 
@@ -189,9 +214,7 @@ class EzBloc extends Bloc<EzBlocEvent, EzBlocBaseState> {
    * 
    * ## Example
    * ```
-   *  ezBloc.createEvent("BUTTON_CLICKED", {"selected": false, "num_click": 0}, (argKeys, argMap) {
-   *    // argKeys prints ["selected", "num_click"]
-   *    // argMap prints {"selected": false, "num_click": 0}
+   *  ezBloc.createEvent("BUTTON_CLICKED", {"selected": false, "num_click": 0}, (currentEvent, argKeys, argMap) {
    *    if (argMap["selected"]) {
    *      return "BUTTON_SELECTED_STATE"; 
    *    } else {
@@ -298,7 +321,7 @@ class EzBloc extends Bloc<EzBlocEvent, EzBlocBaseState> {
     EzBlocBaseState state = EzBlocEmptyState(); 
     if (_events.containsKey(event.eventName)) {
       Map eventMap = _events[event.eventName];
-      String stateName = eventMap["callback"](event.map.keys.toList(), event.map);
+      String stateName = eventMap["callback"](event.eventName, event.map.keys.toList(), event.map);
       
       if (_states.containsKey(stateName)) { 
         state = _states[stateName];
@@ -357,5 +380,4 @@ class EzBloc extends Bloc<EzBlocEvent, EzBlocBaseState> {
   }
 
 }
-
 
