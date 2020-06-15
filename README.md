@@ -18,12 +18,64 @@ bloc: ^4.0.0
 ```
 
 ---
+
+### Step 1. Create Events and States with one command 
+
+```
+// Create a handler to determine resulting state from the invoked eventName
+Function EVENT_CALLBACK = (String eventName, valueKeys, valueMap) { 
+      if (eventName == "RED_BUTTON_CLICKED") {
+        // It will print {"value": 3"}  ( See Step 2. Invoke Event )
+        print(valueMap);
+        return "RED_TEXT";
+      } else { 
+        // It will print {"value": 2"}
+        print(valueMap);
+        return "BLUE_TEXT";
+        
+      }
+      return "BLUE_TEXT";
+    };
+   
+// Create states
+ezbloc.createState("RED_TEXT");
+ezbloc.createState("BLUE_TEXT");
+
+// Create Events with their initial values and set the handler (EVENT_CALLBACK) 
+ezbloc.createEvent("RED_BUTTON_CLICKED", {"value": 1}, EVENT_CALLBACK);
+ezbloc.createEvent("BLUE_BUTTON_CLICKED", {"value": 2}, EVENT_CALLBACK);
+```
+
+### Step 2. Invoke Event
+```
+ // Put inside a ontap listener or something
+ // Update event value to {"value": 3}
+ // EVENT_CALLBACK will be called (See Step 1. )
+ ezbloc.invokeEvent("RED_BUTTON_CLICKED", {"value": 3});
+```
+
+### Step 3. Return Widgets based on current state
+```
+  Widget resultingWidget = ezbloc.EzBlocBuilder(context, (String stateName) {
+        switch(stateName) {
+          case "RED_TEXT":
+            return Text("Red Text", style: TextStyle(color: Colors.red));
+          break;
+          case "BLUE_TEXT":
+             return Text("Blue Text", style: TextStyle(color: Colors.blue));
+          break;
+          default:
+            return Text("Default Text", style: TextStyle(color: Colors.black));
+          break;
+          }
+      });
+```
+
+---
  
 ### EzBloc.dart
 
 **Methods** 
-
----
  
 ```
   createEvent(@required String eventName , @required Map valueMap, @required Function callback)
@@ -82,7 +134,7 @@ StateHandler: `Widget stateHandler(stateName)`
     ezbloc = EzBloc();
     
     // Example 1 : Using valueMap to determine resulting state
-    Function EVENT_CALLBACK = (valueKeys, valueMap) {
+    Function EVENT_CALLBACK = (String eventName, valueKeys, valueMap) {
       print("Event Callback value=" + valueMap["value"].toString());
       if (valueMap["value"] == 1) {
         return "state1";
