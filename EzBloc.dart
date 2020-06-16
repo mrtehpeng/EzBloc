@@ -103,7 +103,7 @@ class EzBlocEvent extends EzBlocBaseEvent {
  *    ezbloc.createEvent("BUTTON_CLICKED", {"value": 1}, EVENT_CALLBACK);
  * 
  *    // Example 2 : Using eventName to determine resulting state
- *    Function EVENT_CALLBACK = (String eventName, valueKeys, valueMap) { 
+ *    Function BUTTON_EVENT_CALLBACK = (String eventName, valueKeys, valueMap) { 
  *      if (eventName == "RED_BUTTON_CLICKED") { 
  *        return "RED_TEXT"; 
  *      } else return "BLUE_TEXT"; 
@@ -321,7 +321,7 @@ class EzBloc extends Bloc<EzBlocEvent, EzBlocBaseState> {
     EzBlocBaseState state = EzBlocEmptyState(); 
     if (_events.containsKey(event.eventName)) {
       Map eventMap = _events[event.eventName];
-      String stateName = eventMap["callback"](event.eventName, event.map.keys.toList(), event.map);
+      String stateName = eventMap["callback"](event.eventName, eventMap.keys.toList(), eventMap);
       
       if (_states.containsKey(stateName)) { 
         state = _states[stateName];
