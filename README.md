@@ -34,6 +34,8 @@ Function EVENT_CALLBACK = (String eventName, valueKeys, valueMap) {
         return "BLUE_TEXT";
         
       }
+      
+      // default fallback event
       return "BLUE_TEXT";
     };
    
@@ -64,6 +66,10 @@ ezbloc.createEvent("BLUE_BUTTON_CLICKED", {"value": 2}, EVENT_CALLBACK);
           case "BLUE_TEXT":
              return Text("Blue Text", style: TextStyle(color: Colors.blue));
           break;
+          
+          
+          // Default Widget to be returned on first load.
+          // (Default state)
           default:
             return Text("Default Text", style: TextStyle(color: Colors.black));
           break;
